@@ -18,7 +18,7 @@
 
     <div class="container" id="app" >
         <!-- Dealer section -->
-        <template v-if="isGameRunning">
+        <!-- <template v-if="isGameRunning"> -->
             <div>
                 <h1>Dealer: {{ isGameEnded ? dealerPoints : '??' }}</h1>
                 <template v-if="isGameEnded">
@@ -41,21 +41,22 @@
                     <img :src="getSource(card)" alt="">
                 </template>
             </div>
-        </template>
+        <!-- </template> -->
 
-        <template v-else>
+        <!-- <template v-else>
             <h1>Welcome to River's BlackJack</h1>
             <h3>Click to Start</h3>
         </template>
         <div v-if="!isGameRunning"> 
             <button @click="startNewGame" class="btn btn-success">START NEW GAME</button> 
         </div>
-    
-        <div v-else> 
-            <button @click="hit" class="btn btn-primary" :disabled="isGameEnded">HIT</button> 
-            <button @click="stand" class="btn btn-danger" :disabled="isGameEnded">STAND </button> 
-            <button @click="clearBoardNStartNewGame" class="btn btn-success">NEW GAME</button> 
-            <button @click="giveUp" class="btn btn-secondary">GIVUP</button> 
+     -->
+        <!-- <div v-else>  -->
+        <div>    
+            <button @click="hit" class="btn btn-primary" :disabled="isGameEnded">CARTA</button> 
+            <button @click="stand" class="btn btn-danger" :disabled="isGameEnded">STAI</button> 
+            <button @click="clearBoardNStartNewGame" class="btn btn-success">NUOVA PARTITA</button> 
+            <button @click="giveUp" class="btn btn-secondary">ABBANDONA</button> 
         </div>
     </div>
 

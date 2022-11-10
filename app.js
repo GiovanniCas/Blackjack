@@ -3,7 +3,7 @@ const app = new Vue({
     data: {
         isGameRunning: false,
         isGameEnded: false,
-        msgBoard: 'Make Your Move...',
+        msgBoard: 'Fai la tua mossa...',
         playerPoints: 0,
         dealerPoints: 0,
         turno: 0,
@@ -19,8 +19,8 @@ const app = new Vue({
     },
     methods: {
         newGame() {
-
-            window.location.href = "http://127.0.0.1:5500/blackjack.html";
+            window.location.href = "./blackjack.html";
+            this.startNewGame();
         },
         startNewGame() {
             this.isGameRunning = true;
@@ -40,9 +40,9 @@ const app = new Vue({
             this.playerPoints = this.checkHandValue(this.playerHand);
 
             if(this.playerPoints > 21) {
-                this.playerPoints = "Busted!";
+                this.playerPoints = "SBALLATO!";
                 this.isGameEnded = true;
-                this.msgBoard = 'Busted! You Lost...';
+                this.msgBoard = 'SBALLATO! HAI PERSO!';
             }
             if(this.playerPoints === 21) {
                 this.msgBoard = 'BLACKJACK!';
@@ -56,43 +56,45 @@ const app = new Vue({
                     this.dealerPoints = this.checkHandValue(this.dealerHand);
                 
                     if(this.dealerPoints > 21) {
-                        this.dealerPoints = "Busted!";
+                        this.dealerPoints = "SBALLATO!";
                         this.isGameEnded = true;
-                        this.msgBoard = "Dealer Busted! You win!"
+                        this.msgBoard = "IL DEALER HA SBALLATO! HAI VINTO!"
                         return;
                     }
                 }
             }
 
             if(this.dealerPoints > this.playerPoints) {
-                this.msgBoard = "You Lost..."
+                this.msgBoard = "HAI PERSO!"
             }else if(this.dealerPoints === this.playerPoints) {
-                this.msgBoard = 'DRAW';
+                this.msgBoard = 'PAREGGIO!';
             }else {
-                this.msgBoard = 'You Win!';
+                this.msgBoard = 'HAI VINTO!';
             }
             this.isGameEnded = true;
         },
         giveUp() {
+            window.location.href = "./home.html";
+        },
+        clearBoardNStartNewGame() {
+            
             this.isGameRunning = false;
             this.isGameEnded = false;
-            this.msgBoard = 'Make Your Move...';
+            this.msgBoard = 'Fai la tua mossa...';
             this.playerPoints = 0;
             this.dealerPoints = 0;
             this.playerHand = [];
             this.dealerHand = [];
-        },
-        clearBoardNStartNewGame() {
-            this.turno++;
             
+            this.turno++;
             //ricarcio pagina per evitare blocco
             if(this.turno === 8) {
                 console.log('ciao');
                 window.location.reload();
                 
-            }else{
-                this.giveUp();
-            }
+            }//else{
+            //     this.giveUp();
+            // }
             
             this.startNewGame();
 
@@ -150,15 +152,15 @@ const app = new Vue({
         }
 
     },
-    // created: function () {
+    created: function () {
         
-    //     this.$nextTick(function () {
-    //         // if(this.turno === 8) {
-    //             // Code that will run only after the
-    //             // entire view has been rendered
-    //             this.startNewGame();
-    //         // }
-    //     })
-    // }
+        this.$nextTick(function () {
+            // if(this.turno === 8) {
+                // Code that will run only after the
+                // entire view has been rendered
+                this.startNewGame();
+            // }
+        })
+    }
 
 })
