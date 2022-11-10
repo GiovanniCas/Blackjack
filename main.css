@@ -26,4 +26,9 @@ img {
     img {
         width: 6rem;
     }
+
+    body{
+        background: green;
+        color: white;
+    }
 }
