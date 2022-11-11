@@ -3,7 +3,7 @@ const app = new Vue({
     data: {
         isGameRunning: false,
         isGameEnded: false,
-        msgBoard: 'Fai la tua mossa...',
+        msgBoard: 'Punta per giocare!',
         playerPoints: 0,
         dealerPoints: 0,
         turno: 0,
@@ -11,13 +11,26 @@ const app = new Vue({
         playerHand: [],
         deck: [],
         cardswitch: [],
+        simbolo$: '$',
+        saldo: 1000, 
+        puntata: 0,
+        chips: [{ valore : 10 , immagine:'chip_blu.png'}, { valore : 25 , immagine:'chip_rossa.png'}, { valore : 50 , immagine : 'chip_verde.png'}, { valore : 100, immagine :'chip_nera.png'}],
+       
     },
     beforeMount() {
         this.deck = this.generateCardPool();   
         this.cardSwitch = new Array(52).fill(false);
         
+       
     },
     methods: {
+        punta(e){
+            if(!this.isGameEnded && (this.saldo - e >= 0)) {
+                this.saldo -= e;
+                this.puntata += e;
+            }
+        },
+        
         newGame() {
             window.location.href = "./blackjack.html";
             this.startNewGame();
@@ -32,7 +45,7 @@ const app = new Vue({
             this.playerPoints = this.checkHandValue(this.playerHand);
             if(this.playerPoints === 21) {
                 this.msgBoard = 'BLACKJACK!';
-                this.stand();
+                
             }
         },
         hit() {
@@ -52,6 +65,7 @@ const app = new Vue({
         stand() {
             if(this.playerPoints > this.dealerPoints) {
                 while(this.dealerPoints <= 16 ) {
+                    // setTimeout(() => this.dealCard(), 300);
                     this.dealerHand.push(this.dealCard());
                     this.dealerPoints = this.checkHandValue(this.dealerHand);
                 
@@ -59,19 +73,26 @@ const app = new Vue({
                         this.dealerPoints = "SBALLATO!";
                         this.isGameEnded = true;
                         this.msgBoard = "IL DEALER HA SBALLATO! HAI VINTO!"
+                        this.saldo += this.puntata * 2;
                         return;
                     }
                 }
             }
 
             if(this.dealerPoints > this.playerPoints) {
-                this.msgBoard = "HAI PERSO!"
+                this.msgBoard = "HAI PERSO!";
             }else if(this.dealerPoints === this.playerPoints) {
                 this.msgBoard = 'PAREGGIO!';
+                this.saldo += this.puntata;
             }else {
                 this.msgBoard = 'HAI VINTO!';
+                this.saldo += this.puntata * 2;
+
             }
             this.isGameEnded = true;
+            if (this.saldo == 0) {
+                alert('ohoh')
+            }
         },
         giveUp() {
             window.location.href = "./home.html";
@@ -80,22 +101,22 @@ const app = new Vue({
             
             this.isGameRunning = false;
             this.isGameEnded = false;
-            this.msgBoard = 'Fai la tua mossa...';
+            this.msgBoard = 'Punta per giocare!';
             this.playerPoints = 0;
             this.dealerPoints = 0;
             this.playerHand = [];
             this.dealerHand = [];
+            this.puntata = 0;
+            if(this.vincita > 0) {
+                this.saldo += this.vincita;
+            }
             
             this.turno++;
             //ricarcio pagina per evitare blocco
             if(this.turno === 8) {
                 console.log('ciao');
                 window.location.reload();
-                
-            }//else{
-            //     this.giveUp();
-            // }
-            
+            }
             this.startNewGame();
 
         },
@@ -147,19 +168,24 @@ const app = new Vue({
         getSource(card) {
             return `./PNG-cards-1.3/${card}.png`;
         },
+        getChip(chip) {
+            return `./PNG-cards-1.3/${chip}`;
+        },
+      
         reloadPage() {
             this.window.location.reload();
-        }
+        },
+     
 
     },
     created: function () {
         
         this.$nextTick(function () {
-            // if(this.turno === 8) {
-                // Code that will run only after the
-                // entire view has been rendered
-                this.startNewGame();
-            // }
+            
+            // Code that will run only after the
+            // entire view has been rendered
+            this.startNewGame();
+            
         })
     }
 

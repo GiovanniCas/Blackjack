@@ -18,54 +18,67 @@
 
     <div class="container" id="app" >
         <!-- Dealer section -->
-        <!-- <template v-if="isGameRunning"> -->
+      
+        <div class="d-flex flex-column align-items-center">
             <div>
                 <h1>Dealer: {{ isGameEnded ? dealerPoints : '??' }}</h1>
+
+            </div>
+            <div>
                 <template v-if="isGameEnded">
                     <img v-for="card in dealerHand" :src="getSource(card)" alt="">
-
                 </template>
                 <template v-else>
                     <img v-for="(card, index) in dealerHand" :src="index === 0 ? './PNG-cards-1.3/back.png' : getSource(card)" alt="">
                 </template>
             </div>
-            
-            <div>
-                <div id="msg-board"> {{ msgBoard }}</div>
-            </div>
-
-            <!-- Player section -->
+        </div>
+        
+        <div class="d-flex justify-content-center">
+            <div id="msg-board"> {{ msgBoard }}</div>
+        </div>
+        <div>
+            <h4 class="text-center">Piatto: {{ simbolo$}} {{ puntata * 2 }}</h4>
+        </div>
+        <!-- Player section -->
+        <div class="d-flex flex-column align-items-center">
             <div>
                 <h1>You: {{ playerPoints }}</h1>
+            </div>
+            <div>
                 <template v-for="card in playerHand"> 
                     <img :src="getSource(card)" alt="">
                 </template>
             </div>
-        <!-- </template> -->
-
-        <!-- <template v-else>
-            <h1>Welcome to River's BlackJack</h1>
-            <h3>Click to Start</h3>
-        </template>
-        <div v-if="!isGameRunning"> 
-            <button @click="startNewGame" class="btn btn-success">START NEW GAME</button> 
         </div>
-     -->
-        <!-- <div v-else>  -->
-        <div>    
-            <button @click="hit" class="btn btn-primary" :disabled="isGameEnded">CARTA</button> 
-            <button @click="stand" class="btn btn-danger" :disabled="isGameEnded">STAI</button> 
-            <button @click="clearBoardNStartNewGame" class="btn btn-success">NUOVA PARTITA</button> 
-            <button @click="giveUp" class="btn btn-secondary">ABBANDONA</button> 
+      
+        <div class="d-flex div-bottoni-per-giocare justify-content-center">    
+            <div v-if="puntata !=0 && !isGameEnded">
+                <button @click="hit" class="btn btn-primary" :disabled="isGameEnded">CARTA</button> 
+                <button @click="stand" class="btn btn-danger" :disabled="isGameEnded">STAI</button> 
+            </div>
+            
+            <div v-if="isGameEnded">
+                <button @click="clearBoardNStartNewGame" class="btn btn-success">NUOVA PARTITA</button> 
+                <button @click="giveUp" class="btn btn-secondary">ABBANDONA</button> 
+            </div>
+        </div>
+
+
+        <div class="text-center">Puntata: {{ simbolo$}} {{ puntata }}</div>
+        <div class="mb-3 text-center"> {{ simbolo$}} {{ saldo }}</div>
+        <div id="saldo" class="d-flex justify-content-center" style="height: 100px">
+            <div v-for="(chip, index) in chips" class="d-flex flex-column align-items-center"> 
+                <div @click="punta(chip.valore)">
+                    <img :src="getChip(chip.immagine)" class="chip"><br>
+                    <p class="punta10"> {{ chip.valore }} </p>
+                </div> 
+            </div>
         </div>
     </div>
-
-
-
-
+    <div>
+    
     <script src="./app.js"></script>
- 
-
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
 </body>
